@@ -44,7 +44,7 @@ namespace BST
         Bst(BstNode*t=NULL):root(t){};
         ~Bst()
         {
-
+            destory(root);
         }
         void set_root(BstNode*iroot)
         {
@@ -54,6 +54,8 @@ namespace BST
         {
             return root;
         }
+        //销毁
+        void destory(BstNode*root);
         //插入元素
         BstNode*insert(BstNode*root,int val);
         //查找任意元素(递归)
@@ -64,6 +66,8 @@ namespace BST
         BstNode*FindMax(BstNode*root);
         //查找最小元素
         BstNode*FindMin(BstNode*root);
+        //中序
+        void in_order(BstNode*root)const;
         //删除元素
         BstNode*Delete(BstNode*root,int val);
 
@@ -90,6 +94,17 @@ namespace BST
         }
         return root;
     }
+    void Bst:: destory(BstNode*root)
+        {
+            if(root==NULL)
+                return;
+            else
+            {
+                destory(root->get_left());
+                destory(root->get_right());
+                delete root;
+            } 
+        }
     //查找任意元素(递归)
     BstNode*Bst::Find(BstNode*root,int val)
     {
@@ -101,6 +116,15 @@ namespace BST
             return Find(root->get_right(),val);
         else
             return root;   //找到了
+    }
+    //中序
+    void Bst::in_order(BstNode*root)const
+    {
+        if(root==NULL)
+        return ;
+        in_order(root->get_left());
+        cout<<root->get_data()<<" ";
+        in_order(root->get_right());
     }
      //查找任意元素(非递归)
     BstNode*Bst::iterFind(BstNode*root,int val)
@@ -160,7 +184,7 @@ namespace BST
                 {
                     BstNode*temp=FindMax(root->get_left());
                     root->set_data(temp->get_data());
-                    root->set_left(Delete(root->get_left(),val));
+                    root->set_left(Delete(root->get_left(),temp->get_data()));
 
                 }
                 else
