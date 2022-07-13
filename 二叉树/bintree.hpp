@@ -47,8 +47,9 @@ public:
     BinTree(BinTreeNode*t=NULL):root(t){};
     ~BinTree()
     {
-        delete root;
+        destroytree(root);
     }
+    void destroytree(BinTreeNode*r);
     //设置根节点
     void set_root(BinTreeNode*t)
     {
@@ -82,6 +83,18 @@ public:
     //11.判断一个节点t是否在以r为根的子树中
     bool is_in_tree(BinTreeNode *r,BinTreeNode *t)const;
 };
+//销毁二叉树
+void BinTree::destroytree(BinTreeNode*r)
+    {
+        if(r==NULL)
+            return;
+        else
+        {
+            destroytree(r->get_left());
+            destroytree(r->get_right());
+            delete(r);
+        }
+    }
 //创建二叉树，这里不妨使用前序创建二叉树，遇到‘#’表示节点为空
 BinTreeNode*BinTree::create_tree()
 {
@@ -276,6 +289,5 @@ void BinTree ::print_rout(BinTreeNode*r,int sum)const
     print_rout(r->get_right(),sum);
     sum+=r->get_data();
     dfs_s.pop();
-
 }
 }
