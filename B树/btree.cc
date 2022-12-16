@@ -32,7 +32,7 @@ void BTreeNode::traverse() {
 //查找以这个节点为根的所有子树上的关键字
 BTreeNode *BTreeNode::search(int k) {
   //找到节点上第一个比k大的关键字
-  int i = 0;
+  int i = 0; 
   while (i < n && k > keys[i])
     i++;
   //查看该关键字是否是我们要找的关键字
@@ -46,7 +46,7 @@ BTreeNode *BTreeNode::search(int k) {
   return C[i]->search(k);
 }
 
-//插入操作(前提该节点为非空)
+//插入操作(前提该节点为非满)
 void BTreeNode::insertNonFull(int k) {
   //将索引初始化最右边的节点
   int i = n - 1;
@@ -105,14 +105,14 @@ void BTreeNode::spliChild(int i, BTreeNode *y) {
   //减少y中keys的数量
   y->n = t - 1;
 
-  //因为该节点需要存放从子节点提升上来的节点，所以需要为新节点腾出位置
+  //因为该节点需要存放从子节点提升上来的节点，所以需要为新节点腾出位置,要插入C[i]的右边
   for (int j = n; j >= i + 1; j--) {
     C[j + 1] = C[j];
   }
   C[i + 1] = z;
 
-  //为key腾出位置
-  for (int j = n - 1; j >= i; j++) {
+  //为key腾出位置,要插入C[i]的位置
+  for (int j = n - 1; j >= i; j--) {
     keys[j + 1] = keys[j];
   }
   keys[i] = y->keys[t - 1];
